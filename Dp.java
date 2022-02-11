@@ -261,15 +261,63 @@ public class Dp{
         //     return dp[idx] = ans % ((int) 1e9 + 7);
         // }
 
-        
+        public long rec(String s, int IDX, long[] dp) {
+            for(int idx = s.length(); idx >= 0; idx --) {
+                if(idx == s.length()) {
+                    dp[idx] = 1;
+                    continue;
+                }
+                if(s.charAt(idx) == '0') {
+                    dp[idx] = 0;
+                    continue;
+                }
+                long ans = 0;
+                char a = s.charAt(idx);
+                if(a == '*'){
+                    ans += 9 * dp[idx + 1];//rec(s, idx + 1, dp); //single digit call
+                    if(idx < s.length() - 1) {
+                        char b = s.charAt(idx + 1);
+                        if(b >= '0' && b <= '6') {
+                            ans += 2 * dp[idx + 2];//rec(s, idx + 2, dp);
+                        } else if(b >= '7' && b <= '9') {
+                            ans += 1 * dp[idx + 2];//rec(s, idx + 2, dp);
+                        } else {
+                            ans += 15 * dp[idx + 2];//rec(s, idx + 2, dp);
+                        }
+                    }
+                } else {
+                    ans += dp[idx + 1];//rec(s, idx + 1, dp);
+                    if(idx < s.length() - 1) {
+                        char b = s.charAt(idx + 1);
+                        if(b == '*') {
+                            if(a == '1') {
+                                ans += 9 * dp[idx + 2];//rec(s, idx + 2, dp);
+                            } else if(a == '2') {
+                                ans += 6 * dp[idx + 2];//rec(s, idx + 2, dp);
+                            }
+                        } else {
+                            if(Integer.parseInt(s.substring(idx, idx + 2)) <= 26) {
+                                ans += 1 * dp[idx + 2];//rec(s, idx + 2, dp);
+                            }
+                        }
+                    }
+                }
+                dp[idx] = ans % ((int) 1e9 + 7);
+            }
+            return dp[IDX];
+            // if(dp[idx] != -1) return dp[idx];
+        }
         
     public static void main(String[] args) throws Exception {
         // write your code here
-        int[] dp = new int[9];
-        Arrays.fill(dp, -1);
+        // int[] dp = new int[9];
+        // Arrays.fill(dp, -1);
         // System.out.println(fiboMem(7, dp));
         // System.out.println(fiboTab(7, dp));
-        System.out.println(arrRec("11234451", 0, dp));
-        display(dp);
+        // System.out.println(arrRec("11234451", 0, dp));
+        // long[] dp = new long[s.length() + 1];
+        // Arrays.fill(dp, -1);
+        //  rec(s, 0, dp);
+        // display(dp);
     }
 }

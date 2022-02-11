@@ -261,53 +261,101 @@ public class Dp{
         //     return dp[idx] = ans % ((int) 1e9 + 7);
         // }
 
-        public long rec(String s, int IDX, long[] dp) {
-            for(int idx = s.length(); idx >= 0; idx --) {
-                if(idx == s.length()) {
-                    dp[idx] = 1;
-                    continue;
-                }
-                if(s.charAt(idx) == '0') {
-                    dp[idx] = 0;
-                    continue;
-                }
-                long ans = 0;
-                char a = s.charAt(idx);
-                if(a == '*'){
-                    ans += 9 * dp[idx + 1];//rec(s, idx + 1, dp); //single digit call
-                    if(idx < s.length() - 1) {
-                        char b = s.charAt(idx + 1);
-                        if(b >= '0' && b <= '6') {
-                            ans += 2 * dp[idx + 2];//rec(s, idx + 2, dp);
-                        } else if(b >= '7' && b <= '9') {
-                            ans += 1 * dp[idx + 2];//rec(s, idx + 2, dp);
-                        } else {
-                            ans += 15 * dp[idx + 2];//rec(s, idx + 2, dp);
-                        }
-                    }
-                } else {
-                    ans += dp[idx + 1];//rec(s, idx + 1, dp);
-                    if(idx < s.length() - 1) {
-                        char b = s.charAt(idx + 1);
-                        if(b == '*') {
-                            if(a == '1') {
-                                ans += 9 * dp[idx + 2];//rec(s, idx + 2, dp);
-                            } else if(a == '2') {
-                                ans += 6 * dp[idx + 2];//rec(s, idx + 2, dp);
-                            }
-                        } else {
-                            if(Integer.parseInt(s.substring(idx, idx + 2)) <= 26) {
-                                ans += 1 * dp[idx + 2];//rec(s, idx + 2, dp);
-                            }
-                        }
-                    }
-                }
-                dp[idx] = ans % ((int) 1e9 + 7);
-            }
-            return dp[IDX];
-            // if(dp[idx] != -1) return dp[idx];
+        // Decode Ways 2
+
+        // public long rec(String s, int IDX, long[] dp) {
+        //     for(int idx = s.length(); idx >= 0; idx --) {
+        //         if(idx == s.length()) {
+        //             dp[idx] = 1;
+        //             continue;
+        //         }
+        //         if(s.charAt(idx) == '0') {
+        //             dp[idx] = 0;
+        //             continue;
+        //         }
+        //         long ans = 0;
+        //         char a = s.charAt(idx);
+        //         if(a == '*'){
+        //             ans += 9 * dp[idx + 1];//rec(s, idx + 1, dp); //single digit call
+        //             if(idx < s.length() - 1) {
+        //                 char b = s.charAt(idx + 1);
+        //                 if(b >= '0' && b <= '6') {
+        //                     ans += 2 * dp[idx + 2];//rec(s, idx + 2, dp);
+        //                 } else if(b >= '7' && b <= '9') {
+        //                     ans += 1 * dp[idx + 2];//rec(s, idx + 2, dp);
+        //                 } else {
+        //                     ans += 15 * dp[idx + 2];//rec(s, idx + 2, dp);
+        //                 }
+        //             }
+        //         } else {
+        //             ans += dp[idx + 1];//rec(s, idx + 1, dp);
+        //             if(idx < s.length() - 1) {
+        //                 char b = s.charAt(idx + 1);
+        //                 if(b == '*') {
+        //                     if(a == '1') {
+        //                         ans += 9 * dp[idx + 2];//rec(s, idx + 2, dp);
+        //                     } else if(a == '2') {
+        //                         ans += 6 * dp[idx + 2];//rec(s, idx + 2, dp);
+        //                     }
+        //                 } else {
+        //                     if(Integer.parseInt(s.substring(idx, idx + 2)) <= 26) {
+        //                         ans += 1 * dp[idx + 2];//rec(s, idx + 2, dp);
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //         dp[idx] = ans % ((int) 1e9 + 7);
+        //     }
+        //     return dp[IDX];
+        //     // if(dp[idx] != -1) return dp[idx];
+        // }
+
+        // Friends pairing
+        // public static int rec(int n) {
+        //     if(n == 0) {
+        //         return 1;
+        //     }
+        //     int ans = 0;
+        //     ans += rec(n - 1);
+        //     if(n > 1) ans += rec(n - 2) * (n - 1);
+        //     return ans;
+        // }
+    
+        // public static int memo(int n, int[] dp) {
+        //     if(n == 0) {
+        //         return dp[n] = 1;
+        //     }
+        //     if(dp[n] != 0) return dp[n];
+        //     int ans = 0;
+        //     ans += memo(n - 1, dp);
+        //     if(n > 1) ans += memo(n - 2, dp) * (n - 1);
+        //     return dp[n] = ans;
+        // }
+    
+        // public static int tab(int N, int[] dp) {
+        //     for(int n = 0; n <= N; n ++) {
+        //         if(n == 0) {
+        //             dp[n] = 1;
+        //             continue;
+                // }
+                // if(dp[n] != 0) return dp[n];
+        //         int ans = 0;
+        //         ans += dp[n - 1];//memo(n - 1, dp);
+        //         if(n > 1) ans += dp[n - 2] * (n - 1);//memo(n - 2, dp) * (n - 1);
+        //         dp[n] = ans;
+        //     }
+        //     return dp[N];
+        // }
+
+        public static int kSubsets(int n, int k) {
+            if(n == 0 || n < k) return 0;
+            if(n == k || k == 1) return 1;
+            int ans = 0;
+            ans += kSubsets(n - 1, k - 1);
+            ans += kSubsets(n - 1, k) * k;
+            return ans;
         }
-        
+
     public static void main(String[] args) throws Exception {
         // write your code here
         // int[] dp = new int[9];
@@ -318,6 +366,7 @@ public class Dp{
         // long[] dp = new long[s.length() + 1];
         // Arrays.fill(dp, -1);
         //  rec(s, 0, dp);
+        System.out.println(kSubsets(4, 2));
         // display(dp);
     }
 }

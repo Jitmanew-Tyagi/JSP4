@@ -170,6 +170,99 @@ public class Dp{
             return dp[IDX];
         }
 
+
+        
+        public static int numDecodings(String s) {
+            long[] dp = new long[s.length() + 1];
+            Arrays.fill(dp, -1);
+            return (int)rec(s, 0, dp);
+        }
+        
+        public static long rec(String s, int idx, long[] dp) {
+            if(idx == s.length()) {
+                return dp[idx] = 1;
+            }
+            if(s.charAt(idx) == '0') {
+                return dp[idx] = 0;
+            }
+            if(dp[idx] != -1) return dp[idx];
+            long ans = 0;
+            char a = s.charAt(idx);
+            if(a == '*'){
+                ans += 9 * rec(s, idx + 1, dp); //single digit call
+                if(idx < s.length() - 1) {
+                    char b = s.charAt(idx + 1);
+                    if(b >= '0' && b <= '6') {
+                        ans += 2 * rec(s, idx + 2, dp);
+                    } else if(b >= '7' && b <= '9') {
+                        ans += 1 * rec(s, idx + 2, dp);
+                    } else {
+                        ans += 15 * rec(s, idx + 2, dp);
+                    }
+                }
+            } else {
+                ans += rec(s, idx + 1, dp);
+                if(idx < s.length() - 1) {
+                    char b = s.charAt(idx + 1);
+                    if(b == '*') {
+                        if(a == '1') {
+                            ans += 9 * rec(s, idx + 2, dp);
+                        } else if(a == '2') {
+                            ans += 6 * rec(s, idx + 2, dp);
+                        }
+                    } else {
+                        if(Integer.parseInt(s.substring(idx, idx + 2)) <= 26) {
+                            ans += 1 * rec(s, idx + 2, dp);
+                        }
+                    }
+                }
+            }
+            return dp[idx] = ans % ((int) 1e9 + 7);
+        }
+        // public static long rec(String s, int idx) {
+        //     if(idx == s.length()) {
+        //         return 1;
+        //     }
+        //     if(s.charAt(idx) == '0') {
+        //         return 0;
+        //     }
+        //     if(dp[idx] != -1) return dp[idx];
+        //     long ans = 0;
+        //     char a = s.charAt(idx);
+        //     if(a == '*'){
+        //         ans += 9 * rec(s, idx + 1, dp); //single digit call
+        //         if(idx < s.length() - 1) {
+        //             char b = s.charAt(idx + 1);
+        //             if(b >= '0' && b <= '6') {
+        //                 ans += 2 * rec(s, idx + 2);
+        //             } else if(b >= '7' && b <= '9') {
+        //                 ans += 1 * rec(s, idx + 2);
+        //             } else {
+        //                 ans += 15 * rec(s, idx + 2);
+        //             }
+        //         }
+        //     } else {
+        //         ans += rec(s, idx + 1);
+        //         if(idx < s.length() - 1) {
+        //             char b = s.charAt(idx + 1);
+        //             if(b == '*') {
+        //                 if(a == '1') {
+        //                     ans += 9 * rec(s, idx + 2);
+        //                 } else if(a == '2') {
+        //                     ans += 6 * rec(s, idx + 2);
+        //                 }
+        //             } else {
+        //                 if(Integer.parseInt(s.substring(idx, idx + 2)) <= 26) {
+        //                     ans += 1 * rec(s, idx + 2);
+        //                 }
+        //             }
+        //         }
+        //     }
+        //     return dp[idx] = ans % ((int) 1e9 + 7);
+        // }
+
+        
+        
     public static void main(String[] args) throws Exception {
         // write your code here
         int[] dp = new int[9];

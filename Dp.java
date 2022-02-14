@@ -347,18 +347,95 @@ public class Dp{
         //     return dp[N];
         // }
 
-        public static int kSubsets(int n, int k) {
-            if(n == 0 || n < k) return 0;
-            if(n == k || k == 1) return 1;
-            int ans = 0;
-            ans += kSubsets(n - 1, k - 1);
-            ans += kSubsets(n - 1, k) * k;
-            return ans;
+        public static int kSubsets(int N, int K, int[][] dp) {
+            for(int n = 0; n <= N; n ++) {
+                for(int k = 0; k <= K; k ++) {
+                    if(n <= 0 || n < k || k <= 0) {
+                        dp[n][k] = 0;
+                        continue;
+                    }
+                    if(n == k || k == 1) {
+                        dp[n][k] = 1;
+                        continue;
+                    } 
+                    // if(dp[n][k] != 0) return dp[n][k];
+                    int ans = 0;
+                    ans += dp[n - 1][k - 1];//kSubsets(n - 1, k - 1, dp);
+                    ans += dp[n - 1][k] * k;//kSubsets(n - 1, k, dp) * k;
+                    dp[n][k] = ans;
+                }
+            }
+            return dp[N][K];
         }
+
+    public static int gmr(int[][] mine, int r, int c, int[][] dp) {
+        if(c == mine[0].length - 1) {
+            return dp[r][c] = mine[r][c];
+        }
+        if(dp[r][c] != -1) return dp[r][c];
+        int ans = 0;
+        int[][] dirn = {{-1, 1}, {0, 1}, {1, 1}};
+        for(int[] dir : dirn) {
+            int x = r + dir[0];
+            int y = c + dir[1];
+            if(x >= 0 && y < mine[0].length && x < mine.length) {
+                ans = Math.max(ans, gmr(mine, x, y, dp));
+            }
+        }
+        return dp[r][c] = ans + mine[r][c];
+    }
+
+    public static void rhipep(String s, int idx, String ans) {
+        if(idx == s.length()) {
+            System.out.println(ans);
+            return;
+        }
+        if(idx < s.length() - 1 && s.substring(idx, idx + 2).equals("hi")) {
+            rhipep(s, idx + 2, ans + "pep");
+        } else {
+            rhipep(s, idx + 1, ans + s.charAt(idx));
+        }
+    } 
+
+    public int rec(String s, int si, int ei) {
+        
+        if(si >= ei) {
+            if(si == ei) return 1;
+            return 0;
+        }
+        
+        int ans = 0;
+        if(s.charAt(si) == s.charAt(ei)) {
+            int cans = rec(s, si + 1, ei -1) + 2;
+            ans = cans;
+        } else {
+            int canstwo = Math.max(rec(s, si + 1, ei), rec(s, si, ei - 1));
+            ans = canstwo;
+        }
+        return ans;
+    }
+    
+    public int mem(String s, int si, int ei, int[][] dp) {
+        
+        if(si >= ei) {
+            if(si == ei) return dp[si][ei] = 1;
+            return dp[si][si] = 0;
+        }
+        if(dp[si][ei] != -1) return dp[si][ei];
+        int ans = 0;
+        if(s.charAt(si) == s.charAt(ei)) {
+            int cans = mem(s, si + 1, ei -1, dp) + 2;
+            ans = cans;
+        } else {
+            int canstwo = Math.max(mem(s, si + 1, ei, dp), mem(s, si, ei - 1, dp));
+            ans = canstwo;
+        }
+        return dp[si][ei] = ans;
+    }
 
     public static void main(String[] args) throws Exception {
         // write your code here
-        // int[] dp = new int[9];
+        Scanner scn = new Scanner(System.in);
         // Arrays.fill(dp, -1);
         // System.out.println(fiboMem(7, dp));
         // System.out.println(fiboTab(7, dp));
@@ -366,7 +443,20 @@ public class Dp{
         // long[] dp = new long[s.length() + 1];
         // Arrays.fill(dp, -1);
         //  rec(s, 0, dp);
-        System.out.println(kSubsets(4, 2));
+        // System.out.println(kSubsets(4, 2, new int[5][3]));
+        // int n = scn.nextInt();
+        // int m = scn.nextInt();
+        // int[][] dp = new int[n][m];
+        // for(int[] d : dp) Arrays.fill(d, -1);
+        // int[][] mine = new int[n][m];
+        // for(int i = 0; i < n; i ++) {
+        //     for(int j = 0; j < m; j ++) mine[i][j] = scn.nextInt();
+        // }
+        // int maxGold = 0;
+        
+        // for(int i = 0; i < n; i ++) maxGold = Math.max(maxGold, gmr(mine, i, 0, dp));
+        // System.out.println(maxGold);
         // display(dp);
+        rhipep("abhicdhihiab", 0, "");
     }
 }

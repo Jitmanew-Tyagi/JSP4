@@ -397,7 +397,10 @@ public class Dp{
         }
     } 
 
-    public int rec(String s, int si, int ei) {
+
+    // Leetcode 516
+
+    public static int rec(String s, int si, int ei) {
         
         if(si >= ei) {
             if(si == ei) return 1;
@@ -415,7 +418,7 @@ public class Dp{
         return ans;
     }
     
-    public int mem(String s, int si, int ei, int[][] dp) {
+    public static int mem(String s, int si, int ei, int[][] dp) {
         
         if(si >= ei) {
             if(si == ei) return dp[si][ei] = 1;
@@ -446,8 +449,8 @@ public class Dp{
         // System.out.println(kSubsets(4, 2, new int[5][3]));
         // int n = scn.nextInt();
         // int m = scn.nextInt();
-        // int[][] dp = new int[n][m];
-        // for(int[] d : dp) Arrays.fill(d, -1);
+        int[][] dp = new int[6][6];
+        for(int[] d : dp) Arrays.fill(d, -1);
         // int[][] mine = new int[n][m];
         // for(int i = 0; i < n; i ++) {
         //     for(int j = 0; j < m; j ++) mine[i][j] = scn.nextInt();
@@ -457,6 +460,7 @@ public class Dp{
         // for(int i = 0; i < n; i ++) maxGold = Math.max(maxGold, gmr(mine, i, 0, dp));
         // System.out.println(maxGold);
         // display(dp);
-        rhipep("abhicdhihiab", 0, "");
+        // rhipep("abhicdhihiab", 0, "");
+        mem("abbcda", 0, 6, dp)
     }
 }

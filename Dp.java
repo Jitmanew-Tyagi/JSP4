@@ -466,26 +466,26 @@ public class Dp{
     }
 
     // Leetcode 5
-    class Solution {
-        public String longestPalindrome(String s) {
-            String[][] dp = new String[s.length()][s.length()];
-            return rec(s, 0, s.length() - 1, dp);
+
+    public static String longestPalindrome(String s) {
+        String[][] dp = new String[s.length()][s.length()];
+        return rec(s, 0, s.length() - 1, dp);
+    }
+    
+    public String rec(String str, int s, int e, String[][] dp) {
+        if(s >= e) {
+            return dp[s][e] = s == e ? str.substring(s, e + 1): "";
         }
-        
-        public String rec(String str, int s, int e, String[][] dp) {
-            if(s >= e) {
-                return dp[s][e] = s == e ? str.substring(s, e + 1): "";
-            }
-            if(dp[s][e] != null) return dp[s][e];
-            if(str.charAt(s) == str.charAt(e) && rec(str, s + 1, e - 1, dp).length() == (e - s - 1)) {
-                return dp[s][e] = str.substring(s, e + 1);
-            } else {
-                String a = rec(str, s + 1, e, dp);
-                String b = rec(str, s, e - 1, dp);
-                return dp[s][e] = a.length() > b.length() ? a : b;
-            }
+        if(dp[s][e] != null) return dp[s][e];
+        if(str.charAt(s) == str.charAt(e) && rec(str, s + 1, e - 1, dp).length() == (e - s - 1)) {
+            return dp[s][e] = str.substring(s, e + 1);
+        } else {
+            String a = rec(str, s + 1, e, dp);
+            String b = rec(str, s, e - 1, dp);
+            return dp[s][e] = a.length() > b.length() ? a : b;
         }
     }
+    
 
     public static void main(String[] args) throws Exception {
         // write your code here

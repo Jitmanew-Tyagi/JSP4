@@ -436,6 +436,57 @@ public class Dp{
         return dp[si][ei] = ans;
     }
 
+    public static int tab(String s, int SI, int EI, int[][] dp) {
+        
+        int n = EI;
+        for(int gap = 0; gap <= n; gap ++) {
+            for(int si = 0, ei = gap; si <= n && ei <= n; si ++, ei ++) {
+                if(si >= ei) {
+                    if(si == ei) {
+                        dp[si][ei] = 1;
+                        continue;
+                    }
+                    dp[si][ei] = 0;
+                    continue;
+                }
+                
+                // if(dp[si][ei] != -1) return dp[si][ei];
+                int ans = 0;
+                if(s.charAt(si) == s.charAt(ei)) {
+                    int cans = dp[si + 1][ei - 1] + 2;//mem(s, si + 1, ei -1, dp) + 2;
+                    ans = cans;
+                } else {
+                    int canstwo = Math.max(dp[si + 1][ei], dp[si][ei - 1]);
+                    ans = canstwo;
+                }
+                dp[si][ei] = ans;
+            }
+        }
+        return dp[SI][EI];
+    }
+
+    // Leetcode 5
+    class Solution {
+        public String longestPalindrome(String s) {
+            String[][] dp = new String[s.length()][s.length()];
+            return rec(s, 0, s.length() - 1, dp);
+        }
+        
+        public String rec(String str, int s, int e, String[][] dp) {
+            if(s >= e) {
+                return dp[s][e] = s == e ? str.substring(s, e + 1): "";
+            }
+            if(dp[s][e] != null) return dp[s][e];
+            if(str.charAt(s) == str.charAt(e) && rec(str, s + 1, e - 1, dp).length() == (e - s - 1)) {
+                return dp[s][e] = str.substring(s, e + 1);
+            } else {
+                String a = rec(str, s + 1, e, dp);
+                String b = rec(str, s, e - 1, dp);
+                return dp[s][e] = a.length() > b.length() ? a : b;
+            }
+        }
+    }
+
     public static void main(String[] args) throws Exception {
         // write your code here
         Scanner scn = new Scanner(System.in);
@@ -461,6 +512,7 @@ public class Dp{
         // System.out.println(maxGold);
         // display(dp);
         // rhipep("abhicdhihiab", 0, "");
-        mem("abbcda", 0, 6, dp)
+        tab("abbcda", 0, 5, dp);
+        display2D(dp);
     }
 }

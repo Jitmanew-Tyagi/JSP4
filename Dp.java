@@ -467,29 +467,46 @@ public class Dp{
 
     // Leetcode 5
 
-    public static String longestPalindrome(String s) {
-        String[][] dp = new String[s.length()][s.length()];
-        return rec(s, 0, s.length() - 1, dp);
-    }
+    // public static String longestPalindrome(String s) {
+    //     String[][] dp = new String[s.length()][s.length()];
+    //     return rec(s, 0, s.length() - 1, dp);
+    // }
     
-    public String rec(String str, int s, int e, String[][] dp) {
-        if(s >= e) {
-            return dp[s][e] = s == e ? str.substring(s, e + 1): "";
+    // public String rec(String str, int s, int e, String[][] dp) {
+    //     if(s >= e) {
+    //         return dp[s][e] = s == e ? str.substring(s, e + 1): "";
+    //     }
+    //     if(dp[s][e] != null) return dp[s][e];
+    //     if(str.charAt(s) == str.charAt(e) && rec(str, s + 1, e - 1, dp).length() == (e - s - 1)) {
+    //         return dp[s][e] = str.substring(s, e + 1);
+    //     } else {
+    //         String a = rec(str, s + 1, e, dp);
+    //         String b = rec(str, s, e - 1, dp);
+    //         return dp[s][e] = a.length() > b.length() ? a : b;
+    //     }
+    // }
+
+    // public static boolean targetSum(int[] arr, int tar, int idx) {
+    //     //base
+    //     if(tar == 0){
+        if(idx != -1) dp[tar][idx] = 1;
+            return true;
+        } 
+        if(idx != -1 && dp[tar][idx] != -1) return dp[tar][idx] == 1;
+        for(int i = idx + 1; i < arr.length; i ++) {
+            if(tar - arr[i] >= 0) {
+                boolean ans = rec(arr, tar - arr[i], i, dp);
+                if(ans) return ans;
+            }
         }
-        if(dp[s][e] != null) return dp[s][e];
-        if(str.charAt(s) == str.charAt(e) && rec(str, s + 1, e - 1, dp).length() == (e - s - 1)) {
-            return dp[s][e] = str.substring(s, e + 1);
-        } else {
-            String a = rec(str, s + 1, e, dp);
-            String b = rec(str, s, e - 1, dp);
-            return dp[s][e] = a.length() > b.length() ? a : b;
-        }
-    }
+        if(idx != -1) dp[tar][idx] = 0;
+        return false;
+    // }
     
 
     public static void main(String[] args) throws Exception {
         // write your code here
-        Scanner scn = new Scanner(System.in);
+        // Scanner scn = new Scanner(System.in);
         // Arrays.fill(dp, -1);
         // System.out.println(fiboMem(7, dp));
         // System.out.println(fiboTab(7, dp));
@@ -500,8 +517,8 @@ public class Dp{
         // System.out.println(kSubsets(4, 2, new int[5][3]));
         // int n = scn.nextInt();
         // int m = scn.nextInt();
-        int[][] dp = new int[6][6];
-        for(int[] d : dp) Arrays.fill(d, -1);
+        // int[][] dp = new int[6][6];
+        // for(int[] d : dp) Arrays.fill(d, -1);
         // int[][] mine = new int[n][m];
         // for(int i = 0; i < n; i ++) {
         //     for(int j = 0; j < m; j ++) mine[i][j] = scn.nextInt();
@@ -512,7 +529,13 @@ public class Dp{
         // System.out.println(maxGold);
         // display(dp);
         // rhipep("abhicdhihiab", 0, "");
-        tab("abbcda", 0, 5, dp);
-        display2D(dp);
+        // tab("abbcda", 0, 5, dp);
+        // display2D(dp);
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int[] arr = new int[n];
+        for(int i = 0; i < n; i ++) arr[i] = scn.nextInt();
+        int tar = scn.nextInt();
+        System.out.println(targetSum(arr, tar, -1));
     }
 }

@@ -50,6 +50,7 @@ public class Hashmap {
 
     public void assignValues(int size) {
         containers = new linkedlist[size];
+        sohm = 0;
         for(int i = 0; i < size; i ++) containers[i] = new linkedlist();
     }
 
@@ -62,9 +63,7 @@ public class Hashmap {
         sb.append("[ ");
         for(int i = 0; i < containers.length; i ++) {
             linkedlist group = containers[i];
-            if(group == null) {
-                System.out.println("xyz");
-            }
+            
             int size = group.size();
             while(size --> 0) {
                 Node node = group.removeFirst();

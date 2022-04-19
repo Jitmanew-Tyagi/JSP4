@@ -21,11 +21,11 @@ public class Hashmap {
         } 
 
         public void addLast(Node node) {
-            if(tail == null) {
+            if(head == null) {
                 head = tail = node;
             } else {
                 tail.next = node;
-                tail = tail.next;
+                tail = node;
             }
             noe ++;
         }
@@ -36,10 +36,11 @@ public class Hashmap {
 
         public Node removeFirst() {
             Node temp = head;
+            if(noe == 0) head = tail = null;
             if(head != null) {
                 head = head.next;
-                noe --;
             }
+            noe --;
             return temp;
         }
     }

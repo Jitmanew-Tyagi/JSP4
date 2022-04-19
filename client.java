@@ -6,6 +6,6 @@ public class client {
             hm.put(i, 10 * i);
 
         System.out.println(hm.sohm);
-        // hm.display();
+        hm.display();
     }
 }

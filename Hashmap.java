@@ -1,3 +1,4 @@
+import java.util.*;
 public class Hashmap {
 
     private class Node {
@@ -44,7 +45,7 @@ public class Hashmap {
     }
 
     private linkedlist[] containers;
-    private int sohm = 0;
+    public int sohm = 0;
 
     public void assignValues(int size) {
         containers = new linkedlist[size];
@@ -55,16 +56,71 @@ public class Hashmap {
         assignValues(10);
     }
 
-    public void put(Integer key, Integer value) {
+    public void display() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        for(int i = 0; i < containers.length; i ++) {
+            linkedlist group = containers[i];
+            if(group == null) {
+                System.out.println("xyz");
+            }
+            int size = group.size();
+            while(size --> 0) {
+                Node node = group.removeFirst();
+                sb.append("(" + node.key + "=" + node.value + ")");
+                group.addLast(node);
+            }
+        }
+        sb.append("]");
+        System.out.println(sb.toString());
+    }
 
+    private void rehash(){
+        linkedlist[] backup = containers;
+        assignValues(2 * backup.length);
+
+        for(int i = 0; i < backup.length; i ++) {
+            linkedlist group = backup[i];
+            int size = group.size();
+
+            while(size --> 0) {
+                Node node  = group.removeFirst();
+                put(node.key, node.value);
+            }
+        }
+        System.out.println("rehash called");
+    }
+
+    public void put(Integer key, Integer value) {
+        boolean isKey = containsKey(key);
+        if(isKey) {
+            linkedlist group = group(key);
+            group.head.value = value;
+        } else{
+            linkedlist group = group(key);
+            group.addLast(new Node(key, value));
+            sohm ++;
+            double lambda = group.size() / (containers.length * 1.0);
+            if (lambda > 0.6) rehash();
+        }
     }
 
     public void putIfAbsent (Integer key, Integer value) {
-
+        if(!containsKey(key)) put(key, value);
     }
 
     public ArrayList<Integer> keySet() {
-
+        ArrayList<Integer> keys = new ArrayList<>();
+        for(int i = 0; i < containers.length; i ++) {
+            linkedlist group = containers[i];
+            int size = group.size();
+            while(size --> 0) {
+                Node node = group.removeFirst();
+                keys.add(node.key);
+                group.addLast(node);
+            }
+        }
+        return keys;
     }
 
     public boolean isEmpty() {
@@ -96,7 +152,7 @@ public class Hashmap {
         int size = group.size();
         while(size --> 0) {
             if(group.getFirst().key == key) return true;
-            group.addLast(group.removeFirst())
+            group.addLast(group.removeFirst());
         }
         return false;
     }

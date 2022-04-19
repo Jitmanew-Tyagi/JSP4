@@ -59,7 +59,7 @@ public class Hashmap {
 
     public void display() {
         StringBuilder sb = new StringBuilder();
-        sb.append("[");
+        sb.append("[ ");
         for(int i = 0; i < containers.length; i ++) {
             linkedlist group = containers[i];
             if(group == null) {
@@ -68,7 +68,7 @@ public class Hashmap {
             int size = group.size();
             while(size --> 0) {
                 Node node = group.removeFirst();
-                sb.append("(" + node.key + "=" + node.value + ")");
+                sb.append("(" + node.key + "=" + node.value + ") ");
                 group.addLast(node);
             }
         }
